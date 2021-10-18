@@ -1,0 +1,14 @@
+{
+  "extends": "next",
+  "rules": {
+    "import/no-anonymous-default-export": "off",
+    "react/no-unescaped-entities": "off",
+    "react-hooks/exhaustive-deps": "off",
+    "react/jsx-key": "off",
+    "react/jsx-no-target-blank": "off",
+    "react/display-name": "off",
+    "@next/next/link-passhref": "off",
+    "@next/next/no-img-element": "off",
+    "@next/next/no-sync-scripts": "off"
+  }
+}
