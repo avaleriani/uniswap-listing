@@ -9,27 +9,34 @@
     "test-ci": "jest --ci"
   },
   "dependencies": {
-    "graphql": "^15.6.1",
-    "graphql-request": "^3.6.1",
-    "next": "^11.1.2",
+    "bignumber.js": "9.0.1",
+    "graphql": "15.6.1",
+    "graphql-request": "3.6.1",
+    "next": "11.1.2",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "swr": "^1.0.0"
+    "swr": "1.0.0"
   },
   "devDependencies": {
-    "@types/enzyme": "^3.10.8",
-    "@types/enzyme-adapter-react-16": "^1.0.6",
-    "@types/jest": "^27.0.2",
-    "@types/node": "^16.11.1",
-    "@types/react": "^17.0.20",
-    "enzyme": "^3.11.0",
-    "enzyme-adapter-react-16": "^1.15.6",
-    "enzyme-to-json": "^3.5.0",
-    "eslint": "^8.0.1",
-    "eslint-config-next": "^11.0.0",
-    "jest": "27.3.0",
-    "prettier": "^2.3.2",
-    "typescript": "^4.4.2"
+    "@types/enzyme": "3.10.8",
+    "@types/jest": "27.0.2",
+    "@types/node": "16.11.1",
+    "@types/react": "17.0.2",
+    "autoprefixer": "10.3.7",
+    "enzyme": "3.11.0",
+    "enzyme-to-json": "3.5.0",
+    "eslint": "8.0.1",
+    "eslint-config-next": "11.0.0",
+    "jest": "27.3.1",
+    "postcss": "8.3.9",
+    "prettier": "2.3.2",
+    "tailwindcss": "2.2.17",
+    "typescript": "4.4.2"
   },
+  "resolutions": {
+    "**/react": "17.0.2",
+    "**/react-dom": "17.0.2"
+  },
+  
   "license": "ISC"
 }
