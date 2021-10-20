@@ -11,29 +11,32 @@ type PaginationProps = {
 const Pagination = ({ offset, totalItems, setPagination }: PaginationProps) => {
   const itemsPerPage = CONSTANTS.ITEMS_PER_PAGE;
   const currentPage = offset / itemsPerPage;
+  const totalPages = Math.round(totalItems / itemsPerPage);
+
   const setOffset = (newOffset: number) => {
-    if (newOffset >= totalItems) {
-      setPagination(totalItems - offset);
-    } else if (newOffset >= 0) {
+    if (newOffset >= totalItems - itemsPerPage) {
+      setPagination(totalItems - itemsPerPage);
+    } else if (newOffset <= 0) {
       setPagination(0);
     } else {
       setPagination(newOffset);
     }
   };
+
   return (
-    <div className="flex w-full items-center">
+    <div className="flex w-full items-center justify-center items-center fixed bottom-0">
       <button
-        className="border border-teal-500 text-teal-500 block rounded-sm font-bold py-4 px-6 mr-2 flex items-center hover:bg-teal-500 hover:text-red"
-        onClick={() => setOffset(offset + itemsPerPage)}>
-        <Image src={Arrow} width="100px" height="40px" className="h-5 w-5 mr-2" />
+        className="border border-teal-500 text-teal-500 block rounded-sm font-bold py-4 px-6 mr-16 flex items-center hover:border-blue-400"
+        onClick={() => setOffset(offset - itemsPerPage)}>
+        <Image src={Arrow} width="30px" height="30px" className="h-5 w-5 mr-2" />
       </button>
-      <span>
-        Page {currentPage} of {Math.round(totalItems / itemsPerPage)}
+      <span className="text-white">
+        Page {currentPage} of {totalPages ? totalPages : "-"}
       </span>
       <button
-        className="border border-teal-500 text-teal-500 block rounded-sm font-bold py-4 px-6 mr-2 flex items-center hover:bg-teal-500 hover:text-red"
+        className="border border-teal-500 text-teal-500 block rounded-sm font-bold py-4 px-6 ml-16 flex items-center hover:border-blue-400"
         onClick={() => setOffset(offset + itemsPerPage)}>
-        <Image src={Arrow} width="100px" height="40px" className="h-5 w-5 mr-2 transform rotate-180" />
+        <Image src={Arrow} width="30px" height="30px" className="h-5 w-5 mr-2 transform rotate-180" />
       </button>
     </div>
   );

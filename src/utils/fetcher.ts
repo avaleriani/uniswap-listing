@@ -1,16 +1,38 @@
 import useSWR from "swr";
-import { request } from "graphql-request";
+import { request, gql } from "graphql-request";
 import CONSTANTS from "utils/constants";
 
-const fetcher = (query, variables) => request(CONSTANTS.POOLS_URL, query, variables);
+export type Pool = {
+  id: string;
+  token0: Token;
+  token1: Token;
+  txCount: string;
+  totalValueLockedUSD: string;
+  volumeUSD: string;
+};
 
-const fetchData = variables => {
-  const query = `{
-    query getAllPools ($skip: Int) {
-      factories{
+type Token = {
+  name: string;
+  symbol: string;
+};
+
+type PoolsData = {
+  factories: { poolCount: number };
+  pools: Pool[];
+};
+
+const fetcher = (query, offset) => {
+  const variables = { offset };
+  return request(CONSTANTS.POOLS_URL, query, variables);
+};
+
+const fetchData = (offset: number): PoolsData => {
+  const query = gql`
+    query getPools($offset: Int) {
+      factories {
         poolCount
-      },
-      pools(first: 10, skip: $skip) {
+      }
+      pools(first: 10, skip: $offset) {
         id
         token0 {
           id
@@ -27,9 +49,12 @@ const fetchData = variables => {
         volumeUSD
       }
     }
-  }`;
-  // TODO: implement error handling
-  const { data, error } = useSWR([query, variables], fetcher);
+  `;
+  const { data, error } = useSWR([query, offset], fetcher);
+  if (error) {
+    console.error({ error });
+    return error;
+  }
   return data;
 };
 

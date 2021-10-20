@@ -1,29 +1,22 @@
 import type { NextPage } from "next";
 import List from "components/List";
-import fetchData from "../utils/fetcher";
+import fetchData, { Pool } from "utils/fetcher";
 import { useState } from "react";
-import THead from "components/List/thead";
-import TBody from "components/List/thead";
+import ListItem from "components/ListItem";
 
 const Home: NextPage = () => {
-  const [pagination, setPagination] = useState({ limit: 10, offset: 0 });
-  const data = fetchData(pagination);
-  console.log(data);
+  const [offset, setOffset] = useState(0);
+  const data = fetchData(offset);
+  console.log(offset, data)
   return (
-    <div className="font-mono bg-black h-screen">
+    <div className="font-mono bg-black h-screen p-4">
       <h1 className="text-3xl text-white">Pool Watchlist</h1>
-      <List data={data?.pools} pagination={pagination} setPagination={setPagination}>
-        <>
-          <THead>
-            <th className="px-4 py-3">Pool</th>
-            <th className="px-4 py-3">Tx Count</th>
-            <th className="px-4 py-3">TVL (USD)</th>
-            <th className="px-4 py-3">Volume (USD)</th>
-          </THead>
-          <TBody>
-
-          </TBody>
-        </>
+      <List
+        totalItems={data?.factories[0]?.poolCount}
+        header={["Pool", "Tx Count", "TVL (USD)", "Volume (USD)"]}
+        offset={offset}
+        setOffset={setOffset}>
+        {data && data.pools.map((item: Pool) => <ListItem key={item.id} item={item} />)}
       </List>
     </div>
   );
