@@ -1,24 +1,33 @@
 import type { NextPage } from "next";
 import List from "components/List";
-import fetchData, { Pool } from "utils/fetcher";
 import { useState } from "react";
-import ListItem from "components/ListItem";
+import ListPoolsItem from "components/ListPoolsItem";
+import fetchPools from "utils/fetch/fetchPools";
+import { useRouter } from "next/router";
 
 const Home: NextPage = () => {
+  const router = useRouter();
   const [offset, setOffset] = useState(0);
-  const data = fetchData(offset);
-  console.log(offset, data)
+  const data = fetchPools(offset);
+
+  const onItemClick = (id, router) => {
+    router.push(`/pools/${id}`);
+  };
+
   return (
-    <div className="font-mono bg-black h-screen p-4">
+    <>
       <h1 className="text-3xl text-white">Pool Watchlist</h1>
       <List
         totalItems={data?.factories[0]?.poolCount}
         header={["Pool", "Tx Count", "TVL (USD)", "Volume (USD)"]}
         offset={offset}
         setOffset={setOffset}>
-        {data && data.pools.map((item: Pool) => <ListItem key={item.id} item={item} />)}
+        {data &&
+          data.pools.map(item => (
+            <ListPoolsItem key={item.id} item={item} onClick={() => onItemClick(item.id, router)} />
+          ))}
       </List>
-    </div>
+    </>
   );
 };
 

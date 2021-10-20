@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Arrow from "public/assets/arrow.svg";
 import CONSTANTS from "utils/constants";
+import { useEffect, useState } from "react";
 
 type PaginationProps = {
   offset: number;
@@ -12,6 +13,7 @@ const Pagination = ({ offset, totalItems, setPagination }: PaginationProps) => {
   const itemsPerPage = CONSTANTS.ITEMS_PER_PAGE;
   const currentPage = offset / itemsPerPage;
   const totalPages = Math.round(totalItems / itemsPerPage);
+  const [disabled, setDisabled] = useState(!totalItems);
 
   const setOffset = (newOffset: number) => {
     if (newOffset >= totalItems - itemsPerPage) {
@@ -23,17 +25,23 @@ const Pagination = ({ offset, totalItems, setPagination }: PaginationProps) => {
     }
   };
 
+  useEffect(() => {
+    setDisabled(!totalItems);
+  }, [totalItems]);
+
   return (
-    <div className="flex w-full items-center justify-center items-center fixed bottom-0">
+    <div className="flex w-full items-center justify-center items-center fixed bottom-4">
       <button
+        disabled={disabled}
         className="border border-teal-500 text-teal-500 block rounded-sm font-bold py-4 px-6 mr-16 flex items-center hover:border-blue-400"
         onClick={() => setOffset(offset - itemsPerPage)}>
         <Image src={Arrow} width="30px" height="30px" className="h-5 w-5 mr-2" />
       </button>
       <span className="text-white">
-        Page {currentPage} of {totalPages ? totalPages : "-"}
+        Page {currentPage + 1} of {totalPages ? totalPages : "-"}
       </span>
       <button
+        disabled={disabled}
         className="border border-teal-500 text-teal-500 block rounded-sm font-bold py-4 px-6 ml-16 flex items-center hover:border-blue-400"
         onClick={() => setOffset(offset + itemsPerPage)}>
         <Image src={Arrow} width="30px" height="30px" className="h-5 w-5 mr-2 transform rotate-180" />

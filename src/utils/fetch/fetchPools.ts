@@ -1,6 +1,6 @@
 import useSWR from "swr";
-import { request, gql } from "graphql-request";
-import CONSTANTS from "utils/constants";
+import { gql } from "graphql-request";
+import fetcher from "utils/fetch/fetcher";
 
 export type Pool = {
   id: string;
@@ -11,7 +11,7 @@ export type Pool = {
   volumeUSD: string;
 };
 
-type Token = {
+export type Token = {
   name: string;
   symbol: string;
 };
@@ -21,18 +21,13 @@ type PoolsData = {
   pools: Pool[];
 };
 
-const fetcher = (query, offset) => {
-  const variables = { offset };
-  return request(CONSTANTS.POOLS_URL, query, variables);
-};
-
-const fetchData = (offset: number): PoolsData => {
+const fetchPools = (offset: number): PoolsData => {
   const query = gql`
-    query getPools($offset: Int) {
+    query getPools($skip: Int) {
       factories {
         poolCount
       }
-      pools(first: 10, skip: $offset) {
+      pools(first: 10, skip: $skip) {
         id
         token0 {
           id
@@ -50,7 +45,7 @@ const fetchData = (offset: number): PoolsData => {
       }
     }
   `;
-  const { data, error } = useSWR([query, offset], fetcher);
+  const { data, error } = useSWR([query, "skip", offset], fetcher);
   if (error) {
     console.error({ error });
     return error;
@@ -58,4 +53,4 @@ const fetchData = (offset: number): PoolsData => {
   return data;
 };
 
-export default fetchData;
+export default fetchPools;
