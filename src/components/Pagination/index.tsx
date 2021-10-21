@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Arrow from "public/assets/arrow.svg";
+import Arrow from "assets/arrow.svg";
 import CONSTANTS from "utils/constants";
 import { useEffect, useState } from "react";
 
@@ -30,7 +30,7 @@ const Pagination = ({ offset, totalItems, setPagination }: PaginationProps) => {
   }, [totalItems]);
 
   return (
-    <div className="flex w-full items-center justify-center items-center fixed bottom-4">
+    <div className="flex w-full items-center justify-center items-center relative mt-8">
       <button
         disabled={disabled}
         className="border border-teal-500 text-teal-500 block rounded-sm font-bold py-4 px-6 mr-16 flex items-center hover:border-blue-400"

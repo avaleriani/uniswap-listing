@@ -1,6 +1,7 @@
 import useSWR from "swr";
 import { gql } from "graphql-request";
 import fetcher from "utils/fetch/fetcher";
+import CONSTANTS from "utils/constants";
 
 export type Pool = {
   id: string;
@@ -21,13 +22,13 @@ type PoolsData = {
   pools: Pool[];
 };
 
-const fetchPools = (offset: number): PoolsData => {
+const fetchPools = (skip: number): PoolsData => {
   const query = gql`
     query getPools($skip: Int) {
       factories {
         poolCount
       }
-      pools(first: 10, skip: $skip) {
+      pools(first: ${CONSTANTS.ITEMS_PER_PAGE}, skip: $skip) {
         id
         token0 {
           id
@@ -45,7 +46,8 @@ const fetchPools = (offset: number): PoolsData => {
       }
     }
   `;
-  const { data, error } = useSWR([query, "skip", offset], fetcher);
+
+  const { data, error } = useSWR([query, skip], () => fetcher(query, { skip }));
   if (error) {
     console.error({ error });
     return error;

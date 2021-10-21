@@ -1,6 +1,7 @@
 import { gql } from "graphql-request";
 import useSWR from "swr";
 import fetcher from "utils/fetch/fetcher";
+import CONSTANTS from "utils/constants";
 
 type TransactionType = {
   amountUSD: number;
@@ -15,26 +16,30 @@ export type Transaction = {
   swaps: TransactionType[];
 };
 
-const fetchPair = (id: string) => {
+// Fetch a pair data with transactions
+
+const fetchPair = (id: string, skip: number) => {
   const query = gql`
-    query ($id: String) {
+    query ($id: String, $skip: Int) {
       pool(id: $id) {
         id
         token0 {
           id
           symbol
           name
-          totalValueLocked
+          totalValueLockedUSD
+          txCount
         }
         token1 {
           id
           symbol
           name
-          totalValueLocked
+          totalValueLockedUSD
+          txCount 
         }
         txCount
       }
-      transactions(first: 5) {
+      transactions(first: ${CONSTANTS.ITEMS_PER_PAGE}, skip: $skip) {
         id
         blockNumber
         timestamp
@@ -51,12 +56,12 @@ const fetchPair = (id: string) => {
     }
   `;
 
-  const { data, error } = useSWR([query, "id", id], fetcher);
+  const { data, error } = useSWR([query, id, skip], () => fetcher(query, { id, skip }));
   if (error) {
     console.error({ error });
     return error;
   }
-  console.log({ data });
+
   return data;
 };
 

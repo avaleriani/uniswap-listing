@@ -1,7 +1,8 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import type { Pool } from "utils/fetch/fetchPools";
 
 type IAppProvider = {
-  watchlist: string[];
+  watchlist: Pool[];
 };
 
 interface AppState {
@@ -9,25 +10,29 @@ interface AppState {
   setState: (state: any) => void;
 }
 
+// This is our global state for the site.
 const AppContext = createContext([{}, () => {}]);
 
 const AppProvider = props => {
   const { children } = props;
 
-  // TODO: Get watchlist from localstorage if exists
-  const [state, setState] = useState<IAppProvider>({
-    watchlist: [],
-  });
+  // TODO: Extract and validate existence of localstorage
+  const initialState = {
+    watchlist: typeof window !== "undefined" ? JSON.parse(localStorage.getItem("watchlist")) || [] : [],
+  };
+  const [state, setState] = useState<IAppProvider>(initialState);
 
   return <AppContext.Provider value={[state, setState]}>{children}</AppContext.Provider>;
 };
 
 const useAppContext = (): AppState => {
   const [state, setState] = useContext<any>(AppContext);
-  
+
   useEffect(() => {
-    // TODO: save state to local storage
-  }, [state.waatchlist]);
+    if (typeof window !== "undefined") {
+      localStorage?.setItem("watchlist", JSON.stringify(state.watchlist));
+    }
+  }, [state.watchlist]);
 
   return { state, setState };
 };

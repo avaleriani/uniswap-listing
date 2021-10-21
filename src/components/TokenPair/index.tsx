@@ -1,4 +1,4 @@
-import Image from "../Image";
+import Image from "components/Image";
 import { getTokenLogoUrl } from "utils/image";
 import { Token } from "utils/fetch/fetchPools";
 
