@@ -17,7 +17,7 @@ const WatchlistButton = ({ add, remove, isPresent, item, disabled }: ButtonProps
   <button
     disabled={disabled}
     onClick={() => (isPresent ? remove(item) : add(item))}
-    className="text-white font-bold py-2 px-4 border-4 hover:text-red-400 rounded flex items-center justify-center">
+    className="text-white font-bold py-2 px-4 border-4 hover:border-blue-400 rounded flex items-center justify-center">
     {isPresent ? (
       <>
         <Image className="flex mr-3" src={Cross} alt="star icon" width={20} height={20} />

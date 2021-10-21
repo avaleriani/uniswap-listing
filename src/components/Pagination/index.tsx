@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Arrow from "assets/arrow.svg";
 import CONSTANTS from "utils/constants";
-import { useEffect, useState } from "react";
 
 type PaginationProps = {
   offset: number;

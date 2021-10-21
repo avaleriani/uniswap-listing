@@ -9,6 +9,7 @@ import TableTransactionsItem from "components/TableTransactionsItem";
 import TokenPair from "components/TokenPair";
 import WatchlistButton from "components/WatchlistButton";
 import Dropdown from "components/Dropdown";
+import CONSTANTS from "utils/constants";
 
 // TODO: better variable names
 const Details: NextPage = () => {
@@ -17,8 +18,7 @@ const Details: NextPage = () => {
   const { state, setState } = useAppContext();
   const [offset, setOffset] = useState(0);
   const [typeFilter, setTypeFilter] = useState(TypeFilter.ALL);
-  const [pool, setPool] = useState(undefined);
-  const pair = fetchPair(id as string, offset);
+  const pair = fetchPair(id as string);
   const [pairData, setPairData] = useState(pair);
   const inWatchlist = state.watchlist.findIndex(x => x.id === id) !== -1;
 
@@ -45,26 +45,19 @@ const Details: NextPage = () => {
   useEffect(() => {
     if (pair) {
       if (typeFilter !== TypeFilter.ALL) {
-        if (pair[`${typeFilter}s`]) {
-          const newTransactions = { ...pairData };
-          newTransactions.transactions = pair[`${typeFilter}s`].map(i => i.transaction);
-          setPairData(newTransactions);
-        }else{
-          console.error(pair[`${typeFilter}s`])
-        }
+        const newTransactions = pair[`${typeFilter}s`].map(i => i.transaction);
+        setPairData(newTransactions);
       } else {
-        setPairData(pair);
+        setPairData([
+          ...pair.mints.map(i => i.transaction),
+          ...pair.burns.map(i => i.transaction),
+          ...pair.swaps.map(i => i.transaction),
+        ]);
       }
     } else {
       setPairData(undefined);
     }
-  }, [typeFilter, pair, offset]);
-
-  useEffect(() => {
-    pair && pair.pool && setPool(pair.pool);
-  }, [pair]);
-
-  console.log(pairData);
+  }, [typeFilter, pair]);
 
   return (
     <>
@@ -73,17 +66,17 @@ const Details: NextPage = () => {
           {`<-- Back to pools`}
         </a>
         <WatchlistButton
-          disabled={!pool}
-          item={pool}
+          disabled={!pair?.pool}
+          item={pair?.pool}
           add={addToWatchList}
           remove={removeFromWatchlist}
           isPresent={inWatchlist}
         />
       </div>
 
-      <h1 className="text-3xl text-white">{<TokenPair token0={pool?.token0} token1={pool?.token1} />}</h1>
+      <h1 className="text-3xl text-white">{<TokenPair token0={pair?.pool?.token0} token1={pair?.pool?.token1} />}</h1>
 
-      <PairCard pair={pool} />
+      <PairCard pair={pair?.pool} />
 
       <div className="flex">
         <h1 className="text-3xl text-white mb-3 mr-8">Transactions</h1>
@@ -93,15 +86,18 @@ const Details: NextPage = () => {
           selected={typeFilter}
         />
       </div>
+
       <Table
         key={`${typeFilter}-table`}
-        totalItems={pool?.txCount}
+        totalItems={pairData?.length}
         header={["Link to Etherscan", "Tx Type", "Token Amount", "Timestamp"]}
         offset={offset}
         setOffset={setOffset}>
-        {pairData?.transactions?.map(item => (
-          <TableTransactionsItem key={`${item.id}-${typeFilter}`} item={item} />
-        ))}
+        {pairData &&
+          pairData.length > 0 &&
+          pairData
+            .slice(offset, offset + CONSTANTS.ITEMS_PER_PAGE)
+            .map((item, i) => <TableTransactionsItem key={`${item.id}-${typeFilter}-${i}`} item={item} />)}
       </Table>
     </>
   );

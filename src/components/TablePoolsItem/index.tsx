@@ -11,18 +11,15 @@ type TableItemProps = {
 // TODO: add "remove from watchlist" button.
 // TODO: Add "add to watchlist" button.
 
-const TablePoolsItem = ({ item, onClick }: TableItemProps) => {
-  console.log(item, abbNumber(item.totalValueLockedUSD));
-  return (
-    <tr key={item.id} className="h-2 text-white cursor-pointer hover:bg-gray-500" onClick={onClick}>
-      <td className="px-4 py-3 border">
-        <TokenPair token0={item.token0} token1={item.token1} />
-      </td>
-      <td className="px-4 py-3 text-ms font-semibold border">{item.txCount}</td>
-      <td className="px-4 py-3 text-xs border">${abbNumber(item.totalValueLockedUSD)}</td>
-      <td className="px-4 py-3 text-sm border">{abbNumber(item.volumeUSD)}</td>
-    </tr>
-  );
-};
+const TablePoolsItem = ({ item, onClick }: TableItemProps) => (
+  <tr key={item.id} className="h-2 text-white cursor-pointer hover:bg-gray-500" onClick={onClick}>
+    <td className="px-4 py-3 border">
+      <TokenPair token0={item.token0} token1={item.token1} />
+    </td>
+    <td className="px-4 py-3 text-ms font-semibold border">{item.txCount}</td>
+    <td className="px-4 py-3 text-xs border">${abbNumber(item.totalValueLockedUSD)}</td>
+    <td className="px-4 py-3 text-sm border">{abbNumber(item.volumeUSD)}</td>
+  </tr>
+);
 
 export default TablePoolsItem;
