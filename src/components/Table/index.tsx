@@ -45,7 +45,7 @@ const Table = ({ children, header, offset, setOffset, totalItems }: TableProps) 
       </div>
 
       {totalItems && totalItems > 10 ? (
-        <Pagination offset={offset} setPagination={setOffset} totalItems={totalItems} />
+        <Pagination offset={offset} setPagination={setOffset} totalItems={totalItems} isDisabled={!children} />
       ) : null}
     </section>
   );

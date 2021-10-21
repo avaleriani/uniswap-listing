@@ -56,6 +56,8 @@ const query = gql`
                 txCount
             }
             txCount
+            totalValueLockedUSD
+            volumeUSD
         }
         transactions(first: ${CONSTANTS.ITEMS_PER_PAGE}, skip: $skip) {
             id
@@ -77,13 +79,13 @@ const query = gql`
                 id
                 blockNumber
                 timestamp
-                mints {
+                mints (first: 1){
                     amountUSD
                 }
-                burns {
+                burns (first: 1){
                     amountUSD
                 }
-                swaps {
+                swaps (first: 1){
                     amountUSD
                 }
             }
@@ -94,13 +96,13 @@ const query = gql`
                 id
                 blockNumber
                 timestamp
-                mints {
+                mints (first: 1){
                     amountUSD
                 }
-                burns {
+                burns (first: 1){
                     amountUSD
                 }
-                swaps {
+                swaps (first: 1){
                     amountUSD
                 }
             }
@@ -111,13 +113,13 @@ const query = gql`
                 id
                 blockNumber
                 timestamp
-                mints {
+                mints (first: 1){
                     amountUSD
                 }
-                burns {
+                burns (first: 1){
                     amountUSD
                 }
-                swaps {
+                swaps (first: 1){
                     amountUSD
                 }
             }

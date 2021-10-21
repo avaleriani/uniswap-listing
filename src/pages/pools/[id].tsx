@@ -12,12 +12,12 @@ import Dropdown from "components/Dropdown";
 
 // TODO: better variable names
 const Details: NextPage = () => {
+  const router = useRouter();
+  const { id } = router.query;
   const { state, setState } = useAppContext();
   const [offset, setOffset] = useState(0);
   const [typeFilter, setTypeFilter] = useState(TypeFilter.ALL);
   const [pool, setPool] = useState(undefined);
-  const router = useRouter();
-  const { id } = router.query;
   const pair = fetchPair(id as string, offset);
   const [pairData, setPairData] = useState(pair);
   const inWatchlist = state.watchlist.findIndex(x => x.id === id) !== -1;
@@ -45,18 +45,26 @@ const Details: NextPage = () => {
   useEffect(() => {
     if (pair) {
       if (typeFilter !== TypeFilter.ALL) {
-        const newTransactions = { ...pair };
-        newTransactions.transactions = pair[`${typeFilter}s`].map(i => i.transaction);
-        setPairData(newTransactions);
+        if (pair[`${typeFilter}s`]) {
+          const newTransactions = { ...pairData };
+          newTransactions.transactions = pair[`${typeFilter}s`].map(i => i.transaction);
+          setPairData(newTransactions);
+        }else{
+          console.error(pair[`${typeFilter}s`])
+        }
       } else {
         setPairData(pair);
       }
+    } else {
+      setPairData(undefined);
     }
-  }, [typeFilter, pair]);
+  }, [typeFilter, pair, offset]);
 
   useEffect(() => {
     pair && pair.pool && setPool(pair.pool);
   }, [pair]);
+
+  console.log(pairData);
 
   return (
     <>
@@ -86,13 +94,13 @@ const Details: NextPage = () => {
         />
       </div>
       <Table
-        key={typeFilter}
+        key={`${typeFilter}-table`}
         totalItems={pool?.txCount}
         header={["Link to Etherscan", "Tx Type", "Token Amount", "Timestamp"]}
         offset={offset}
         setOffset={setOffset}>
         {pairData?.transactions?.map(item => (
-          <TableTransactionsItem key={`${item.id}-${item.typeFilter}`} item={item} />
+          <TableTransactionsItem key={`${item.id}-${typeFilter}`} item={item} />
         ))}
       </Table>
     </>

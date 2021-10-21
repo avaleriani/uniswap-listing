@@ -24,7 +24,7 @@ const TableTransactionsItem = ({ item }: ListItemProps) => {
   };
 
   return (
-    <tr key={item.id} className="h-8 text-white cursor-pointer hover:bg-gray-500">
+    <tr className="h-8 text-white cursor-pointer hover:bg-gray-500">
       <td className="px-4 py-3 border">
         <a
           target="_blank"

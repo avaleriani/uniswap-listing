@@ -12,7 +12,7 @@ export const abbNumber = value => {
       suffixNum++;
     }
 
-    let result = newValue.toPrecision(3);
+    let result = newValue.toFormat(2);
 
     result += suffixes[suffixNum];
     return result;
