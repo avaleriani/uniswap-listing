@@ -10,6 +10,8 @@ const intervals = [
   { label: "second", seconds: 1 },
 ];
 
+// Get time passed since a timestamp. For display.
+
 export const timeSince = timestamp => {
   const date = new Date(timestamp * 1000);
   const seconds = Math.floor((Date.now() - date.getTime()) / 1000);

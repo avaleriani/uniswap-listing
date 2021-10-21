@@ -16,7 +16,7 @@ const AppContext = createContext([{}, () => {}]);
 const AppProvider = props => {
   const { children } = props;
 
-  // TODO: Extract and validate existence of localstorage
+  // TODO: Extract localstorage functionality.
   const initialState = {
     watchlist: typeof window !== "undefined" ? JSON.parse(localStorage.getItem("watchlist")) || [] : [],
   };

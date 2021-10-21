@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
-import List from "components/List";
+import Table from "components/Table";
 import { useState } from "react";
-import ListPoolsItem from "components/ListPoolsItem";
+import TablePoolsItem from "components/TablePoolsItem";
 import fetchPools from "utils/fetch/fetchPools";
 import { useRouter } from "next/router";
 import { useAppContext } from "utils/context";
@@ -17,34 +17,34 @@ const Home: NextPage = () => {
   };
 
   return (
-    <div>
+    <>
       <div>
         <h1 className="text-3xl text-white mb-3">Pool Watchlist</h1>
-        <List
+        <Table
           totalItems={state.watchlist?.length}
           header={["Pool", "Tx Count", "TVL (USD)", "Volume (USD)"]}
           offset={offset}
           setOffset={setOffset}>
           {data &&
             state.watchlist?.map(item => (
-              <ListPoolsItem key={item.id} item={item} onClick={() => onItemClick(item.id, router)} />
+              <TablePoolsItem key={item.id} item={item} onClick={() => onItemClick(item.id, router)} />
             ))}
-        </List>
+        </Table>
       </div>
       <div>
         <h1 className="text-3xl text-white mb-3">All Pools</h1>
-        <List
+        <Table
           totalItems={data?.factories[0]?.poolCount}
           header={["Pool", "Tx Count", "TVL (USD)", "Volume (USD)"]}
           offset={offset}
           setOffset={setOffset}>
           {data &&
             data.pools.map(item => (
-              <ListPoolsItem key={item.id} item={item} onClick={() => onItemClick(item.id, router)} />
+              <TablePoolsItem key={item.id} item={item} onClick={() => onItemClick(item.id, router)} />
             ))}
-        </List>
+        </Table>
       </div>
-    </div>
+    </>
   );
 };
 

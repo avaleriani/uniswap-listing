@@ -22,6 +22,8 @@ type PoolsData = {
   pools: Pool[];
 };
 
+// Paginated fetch a pools data
+
 const fetchPools = (skip: number): PoolsData => {
   const query = gql`
     query getPools($skip: Int) {

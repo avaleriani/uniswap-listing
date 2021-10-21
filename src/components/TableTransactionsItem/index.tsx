@@ -7,7 +7,9 @@ type ListItemProps = {
   item: Transaction;
 };
 
-const ListTransactionsItem = ({ item }: ListItemProps) => {
+// Table transactions rows
+
+const TableTransactionsItem = ({ item }: ListItemProps) => {
   const getTransactionType = () => {
     if (item.mints.length > 0) return "mint";
     if (item.swaps.length > 0) return "swap";
@@ -34,4 +36,4 @@ const ListTransactionsItem = ({ item }: ListItemProps) => {
   );
 };
 
-export default ListTransactionsItem;
+export default TableTransactionsItem;

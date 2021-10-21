@@ -1,21 +1,23 @@
 import type { NextPage } from "next";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import fetchPair from "utils/fetch/fetchPair";
+import fetchPair, { TypeFilter } from "utils/fetch/fetchPair";
 import { useAppContext } from "utils/context";
 import PairCard from "components/PairCard";
-import List from "components/List";
-import ListTransactionsItem from "components/ListTransactionsItem";
+import Table from "components/Table";
+import TableTransactionsItem from "components/TableTransactionsItem";
 import TokenPair from "components/TokenPair";
 import WatchlistButton from "components/WatchlistButton";
+import Dropdown from "components/Dropdown";
 
 const Details: NextPage = () => {
   const { state, setState } = useAppContext();
   const [offset, setOffset] = useState(0);
+  const [typeFilter, setTypeFilter] = useState(TypeFilter.ALL);
   const [pool, setPool] = useState(undefined);
   const router = useRouter();
   const { id } = router.query;
-  const pair = fetchPair(id as string, offset);
+  const pair = fetchPair(id as string, typeFilter, offset);
   const inWatchlist = state.watchlist.findIndex(x => x.id === id) !== -1;
 
   const addToWatchList = item => {
@@ -49,15 +51,23 @@ const Details: NextPage = () => {
 
       <PairCard pair={pool} />
 
-      <List
+      <div className="flex">
+        <h1 className="text-3xl text-white mb-3 mr-8">Transactions</h1>
+        <Dropdown
+          options={[TypeFilter.ALL, TypeFilter.MINT, TypeFilter.BURN, TypeFilter.SWAP]}
+          setOption={setTypeFilter}
+          selected={typeFilter}
+        />
+      </div>
+      <Table
         totalItems={pair?.pool?.txCount}
         header={["Link to Etherscan", "Tx Type", "Token Amount", "Timestamp"]}
         offset={offset}
         setOffset={setOffset}>
         {pair?.transactions?.map(item => (
-          <ListTransactionsItem key={item.id} item={item} />
+          <TableTransactionsItem key={item.id} item={item} />
         ))}
-      </List>
+      </Table>
     </>
   );
 };
