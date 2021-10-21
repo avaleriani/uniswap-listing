@@ -2,6 +2,7 @@ import CONSTANTS from "utils/constants";
 import type { Transaction } from "utils/fetch/fetchPair";
 import { timeSince } from "utils/time";
 import { abbNumber } from "utils/money";
+import { TypeFilter } from "utils/fetch/fetchPair";
 
 type ListItemProps = {
   item: Transaction;
@@ -11,9 +12,9 @@ type ListItemProps = {
 
 const TableTransactionsItem = ({ item }: ListItemProps) => {
   const getTransactionType = () => {
-    if (item.mints.length > 0) return "mint";
-    if (item.swaps.length > 0) return "swap";
-    if (item.burns.length > 0) return "burn";
+    if (item.mints.length > 0) return TypeFilter.MINT;
+    if (item.swaps.length > 0) return TypeFilter.SWAP;
+    if (item.burns.length > 0) return TypeFilter.BURN;
   };
 
   const transactionTye = getTransactionType();
@@ -23,7 +24,7 @@ const TableTransactionsItem = ({ item }: ListItemProps) => {
   };
 
   return (
-    <tr key={item.id} className="text-white cursor-pointer hover:bg-gray-500">
+    <tr key={item.id} className="h-8 text-white cursor-pointer hover:bg-gray-500">
       <td className="px-4 py-3 border">
         <a
           target="_blank"

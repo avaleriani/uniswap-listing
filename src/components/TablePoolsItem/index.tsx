@@ -12,7 +12,7 @@ type TableItemProps = {
 // TODO: Add "add to watchlist" button.
 
 const TablePoolsItem = ({ item, onClick }: TableItemProps) => (
-  <tr key={item.id} className="text-white cursor-pointer hover:bg-gray-500" onClick={onClick}>
+  <tr key={item.id} className="h-2 text-white cursor-pointer hover:bg-gray-500" onClick={onClick}>
     <td className="px-4 py-3 border">
       <TokenPair token0={item.token0} token1={item.token1} />
     </td>

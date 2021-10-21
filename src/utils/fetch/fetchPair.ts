@@ -1,6 +1,7 @@
 import useSWR from "swr";
 import fetcher from "utils/fetch/fetcher";
-import { queryAll, queryBurns, queryMints, querySwaps } from "../filteredQueries";
+import { gql } from "graphql-request";
+import CONSTANTS from "utils/constants";
 
 type TransactionType = {
   amountUSD: number;
@@ -24,30 +25,104 @@ export enum TypeFilter {
 
 // Paginated fetch a pair data with transactions
 
-const fetchPair = (id: string, type: TypeFilter, skip: number) => {
-  const getQuery = () => {
-    if (type === TypeFilter.BURN) return queryBurns;
-    if (type === TypeFilter.MINT) return queryMints;
-    if (type === TypeFilter.SWAP) return querySwaps;
-    if (type === TypeFilter.ALL) return queryAll;
-  };
-
-  const filterQuery = getQuery();
-
-  const { data, error } = useSWR([filterQuery, id, skip, type], () => fetcher(filterQuery, { id, skip }));
+const fetchPair = (id: string, skip: number) => {
+  const { data, error } = useSWR([query, id, skip], () => fetcher(query, { id, skip }));
   if (error) {
     console.error({ error });
     return error;
   }
 
-  let result = { ...data };
-  const prop = `${type}s`;
-  if (data && type !== TypeFilter.ALL && data[prop]) {
-    result.transactions = data[prop].map(i => i.transaction);
-    delete result[prop];
-  }
-
-  return result;
+  return data;
 };
+
+// Queries used for fetching transactions by type and all together.
+// TODO: Probably there is a much cleaner way to achieve this but I've already spent too much time on this :)
+const query = gql`
+    query ($id: String, $skip: Int, $type: String) {
+        pool(id: $id) {
+            id
+            token0 {
+                id
+                symbol
+                name
+                totalValueLockedUSD
+                txCount
+            }
+            token1 {
+                id
+                symbol
+                name
+                totalValueLockedUSD
+                txCount
+            }
+            txCount
+        }
+        transactions(first: ${CONSTANTS.ITEMS_PER_PAGE}, skip: $skip) {
+            id
+            blockNumber
+            timestamp
+            mints {
+                amountUSD
+            }
+            burns {
+                amountUSD
+            }
+            swaps {
+                amountUSD
+            }
+        }
+        swaps(first: ${CONSTANTS.ITEMS_PER_PAGE}, skip: $skip) {
+            id
+            transaction {
+                id
+                blockNumber
+                timestamp
+                mints {
+                    amountUSD
+                }
+                burns {
+                    amountUSD
+                }
+                swaps {
+                    amountUSD
+                }
+            }
+        }
+        mints(first: ${CONSTANTS.ITEMS_PER_PAGE}, skip: $skip) {
+            id
+            transaction {
+                id
+                blockNumber
+                timestamp
+                mints {
+                    amountUSD
+                }
+                burns {
+                    amountUSD
+                }
+                swaps {
+                    amountUSD
+                }
+            }
+        }
+        burns(first: ${CONSTANTS.ITEMS_PER_PAGE}, skip: $skip) {
+            id
+            transaction {
+                id
+                blockNumber
+                timestamp
+                mints {
+                    amountUSD
+                }
+                burns {
+                    amountUSD
+                }
+                swaps {
+                    amountUSD
+                }
+            }
+        }
+    }
+`;
 
 export default fetchPair;

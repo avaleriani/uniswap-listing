@@ -25,10 +25,9 @@ const Home: NextPage = () => {
           header={["Pool", "Tx Count", "TVL (USD)", "Volume (USD)"]}
           offset={offset}
           setOffset={setOffset}>
-          {data &&
-            state.watchlist?.map(item => (
-              <TablePoolsItem key={item.id} item={item} onClick={() => onItemClick(item.id, router)} />
-            ))}
+          {state.watchlist.map(item => (
+            <TablePoolsItem key={item.id} item={item} onClick={() => onItemClick(item.id, router)} />
+          ))}
         </Table>
       </div>
       <div>

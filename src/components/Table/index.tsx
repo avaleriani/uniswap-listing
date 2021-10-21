@@ -12,7 +12,6 @@ type TableProps = {
 // Table wrapper with flexible head and custom rows
 
 const Table = ({ children, header, offset, setOffset, totalItems }: TableProps) => {
-  console.log(children);
   return (
     <section className="mx-auto ">
       <div className="w-full mb-8 overflow-hidden rounded-lg shadow-lg">

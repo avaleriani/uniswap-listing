@@ -11,8 +11,8 @@ type PaginationProps = {
 
 const Pagination = ({ offset, totalItems, setPagination }: PaginationProps) => {
   const itemsPerPage = CONSTANTS.ITEMS_PER_PAGE;
-  const currentPage = Math.round(offset / itemsPerPage);
-  const totalPages = Math.round(totalItems / itemsPerPage);
+  const currentPage = Math.ceil(offset / itemsPerPage);
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
   const [disabled, setDisabled] = useState(!totalItems);
 
   const setOffset = (newOffset: number) => {

@@ -7,13 +7,15 @@ type ButtonProps = {
   add: (i: Pool) => void;
   remove: (i: Pool) => void;
   isPresent: boolean;
+  disabled: boolean;
   item: Pool;
 };
 
 // Button for adding or removing item from watchlist.
 
-const WatchlistButton = ({ add, remove, isPresent, item }: ButtonProps) => (
+const WatchlistButton = ({ add, remove, isPresent, item, disabled }: ButtonProps) => (
   <button
+    disabled={disabled}
     onClick={() => (isPresent ? remove(item) : add(item))}
     className="text-white font-bold py-2 px-4 border-4 hover:text-red-400 rounded flex items-center justify-center">
     {isPresent ? (

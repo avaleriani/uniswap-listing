@@ -10,6 +10,7 @@ import TokenPair from "components/TokenPair";
 import WatchlistButton from "components/WatchlistButton";
 import Dropdown from "components/Dropdown";
 
+// TODO: better variable names
 const Details: NextPage = () => {
   const { state, setState } = useAppContext();
   const [offset, setOffset] = useState(0);
@@ -17,7 +18,8 @@ const Details: NextPage = () => {
   const [pool, setPool] = useState(undefined);
   const router = useRouter();
   const { id } = router.query;
-  const pair = fetchPair(id as string, typeFilter, offset);
+  const pair = fetchPair(id as string, offset);
+  const [pairData, setPairData] = useState(pair);
   const inWatchlist = state.watchlist.findIndex(x => x.id === id) !== -1;
 
   const addToWatchList = item => {
@@ -29,10 +31,28 @@ const Details: NextPage = () => {
   const removeFromWatchlist = item => {
     const index = state.watchlist.findIndex(x => x.id === item.id);
     if (index !== -1) {
-      const newArr = state.watchlist.splice(index, 1);
+      const newArr = [...state.watchlist];
+      newArr.splice(index, 1);
       setState({ ...state, watchlist: newArr });
     }
   };
+
+  const setOption = (type: TypeFilter) => {
+    setOffset(0);
+    setTypeFilter(type);
+  };
+
+  useEffect(() => {
+    if (pair) {
+      if (typeFilter !== TypeFilter.ALL) {
+        const newTransactions = { ...pair };
+        newTransactions.transactions = pair[`${typeFilter}s`].map(i => i.transaction);
+        setPairData(newTransactions);
+      } else {
+        setPairData(pair);
+      }
+    }
+  }, [typeFilter, pair]);
 
   useEffect(() => {
     pair && pair.pool && setPool(pair.pool);
@@ -44,7 +64,13 @@ const Details: NextPage = () => {
         <a className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600" href="/">
           {`<-- Back to pools`}
         </a>
-        <WatchlistButton item={pool} add={addToWatchList} remove={removeFromWatchlist} isPresent={inWatchlist} />
+        <WatchlistButton
+          disabled={!pool}
+          item={pool}
+          add={addToWatchList}
+          remove={removeFromWatchlist}
+          isPresent={inWatchlist}
+        />
       </div>
 
       <h1 className="text-3xl text-white">{<TokenPair token0={pool?.token0} token1={pool?.token1} />}</h1>
@@ -55,17 +81,18 @@ const Details: NextPage = () => {
         <h1 className="text-3xl text-white mb-3 mr-8">Transactions</h1>
         <Dropdown
           options={[TypeFilter.ALL, TypeFilter.MINT, TypeFilter.BURN, TypeFilter.SWAP]}
-          setOption={setTypeFilter}
+          setOption={setOption}
           selected={typeFilter}
         />
       </div>
       <Table
-        totalItems={pair?.pool?.txCount}
+        key={typeFilter}
+        totalItems={pool?.txCount}
         header={["Link to Etherscan", "Tx Type", "Token Amount", "Timestamp"]}
         offset={offset}
         setOffset={setOffset}>
-        {pair?.transactions?.map(item => (
-          <TableTransactionsItem key={item.id} item={item} />
+        {pairData?.transactions?.map(item => (
+          <TableTransactionsItem key={`${item.id}-${item.typeFilter}`} item={item} />
         ))}
       </Table>
     </>
