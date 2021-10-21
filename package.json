@@ -15,28 +15,29 @@
     "next": "11.1.2",
     "react": "17.0.2",
     "react-dom": "17.0.2",
+    "sharp": "^0.29.2",
     "swr": "1.0.0"
   },
   "devDependencies": {
+    "@babel/plugin-transform-react-jsx": "^7.14.9",
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^12.1.2",
     "@types/enzyme": "3.10.8",
     "@types/jest": "27.0.2",
     "@types/node": "16.11.1",
     "@types/react": "17.0.2",
     "autoprefixer": "10.3.7",
-    "enzyme": "3.11.0",
-    "enzyme-to-json": "3.5.0",
+    "babel-jest": "^27.3.1",
     "eslint": "8.0.1",
     "eslint-config-next": "11.0.0",
-    "jest": "27.3.1",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^27.3.1",
+    "jest-transform-stub": "^2.0.0",
     "postcss": "8.3.9",
     "prettier": "2.3.2",
+    "react-test-renderer": "^17.0.2",
     "tailwindcss": "2.2.17",
     "typescript": "4.4.2"
   },
-  "resolutions": {
-    "**/react": "17.0.2",
-    "**/react-dom": "17.0.2"
-  },
-  
   "license": "ISC"
 }

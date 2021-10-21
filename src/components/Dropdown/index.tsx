@@ -1,7 +1,7 @@
 import { TypeFilter } from "utils/fetch/fetchPair";
 
 type DropdownProps = {
-  options: any[]; // TODO: fix any;
+  options: TypeFilter[];
   setOption: (a: TypeFilter) => void;
   selected: string;
 };

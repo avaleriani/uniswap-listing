@@ -9,7 +9,7 @@ type TransactionType = {
 
 export type Transaction = {
   id: string;
-  blocknumber: string;
+  blockNumber: string;
   timestamp: string;
   mints: TransactionType[];
   burns: TransactionType[];

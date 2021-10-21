@@ -6,7 +6,7 @@ const Image = props => {
   const { src, className, ...rest } = props;
   const [url, setUrl] = useState(props.src);
   // TODO: it may be faster to send a head request to check if the image exist first.
-  // TODO: Serve not found image from local project.
+  // TODO: Serve not found image from local project instead of remote url.
   return (
     <div className={className}>
       <NextImage
