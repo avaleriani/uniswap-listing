@@ -17,7 +17,7 @@ const TokenPair = ({ token0, token1 }: TokenPairProps) => {
               <Image
                 key={token0.symbol}
                 className="object-cover w-full h-full rounded-full"
-                src={getTokenLogoUrl(token0.name)}
+                src={getTokenLogoUrl(token0.name?.toLowerCase())}
                 alt={`${token0.name} token icon`}
                 width="32"
                 height="32"
@@ -27,7 +27,7 @@ const TokenPair = ({ token0, token1 }: TokenPairProps) => {
               <Image
                 key={token1.symbol}
                 className="object-cover w-full h-full rounded-full"
-                src={getTokenLogoUrl(token1.name)}
+                src={getTokenLogoUrl(token1.name?.toLowerCase())}
                 alt={`${token1.name} token icon`}
                 width="32"
                 height="32"
