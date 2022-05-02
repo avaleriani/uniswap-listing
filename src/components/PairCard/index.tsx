@@ -13,7 +13,7 @@ const PairCard = ({ pair }) => (
         <Image
           key={pair?.token0.symbol}
           className="object-cover mr-2"
-          src={getTokenLogoUrl(pair?.token0.symbol)}
+          src={getTokenLogoUrl(pair?.token0.name)}
           alt={`${pair?.token0.name} token icon`}
           width="24"
           height="24"
@@ -27,7 +27,7 @@ const PairCard = ({ pair }) => (
         <Image
           key={pair?.token1.symbol}
           className="object-cover mr-2"
-          src={getTokenLogoUrl(pair?.token1.symbol)}
+          src={getTokenLogoUrl(pair?.token1.name)}
           alt={`${pair?.token1.name} token icon`}
           width="24"
           height="24"
