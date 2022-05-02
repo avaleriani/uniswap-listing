@@ -12,10 +12,10 @@ type TableProps = {
 // Table wrapper with flexible head and custom rows
 
 const Table = ({ children, header, offset, setOffset, totalItems }: TableProps) => (
-  <section className="mx-auto ">
+  <section className="mx-auto">
     <div className="w-full mb-8 overflow-hidden rounded-lg shadow-lg">
       <div className="w-full overflow-x-auto md:overflow-hidden">
-        <table className="w-full p-2 h-[37rem]">
+        <table className="w-full p-2 h-[577px]">
           <thead>
             <tr className="text-md font-semibold text-left text-gray-900 bg-gray-100 uppercase border-b border-gray-600">
               {header &&
