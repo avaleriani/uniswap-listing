@@ -19,18 +19,6 @@ const Home: NextPage = () => {
   return (
     <>
       <div>
-        <h1 className="text-3xl text-white mb-3">Pool Watchlist</h1>
-        <Table
-          totalItems={state.watchlist?.length}
-          header={["Pool", "Tx Count", "TVL (USD)", "Volume (USD)"]}
-          offset={offset}
-          setOffset={setOffset}>
-          {state.watchlist.map(item => (
-            <TablePoolsItem key={item.id} item={item} onClick={() => onItemClick(item.id, router)} />
-          ))}
-        </Table>
-      </div>
-      <div>
         <h1 className="text-3xl text-white mb-3">All Pools</h1>
         <Table
           totalItems={data?.factories[0]?.poolCount}
@@ -41,6 +29,18 @@ const Home: NextPage = () => {
             data.pools.map(item => (
               <TablePoolsItem key={item.id} item={item} onClick={() => onItemClick(item.id, router)} />
             ))}
+        </Table>
+      </div>
+      <div>
+        <h1 className="text-3xl text-white mb-3">Pool Watchlist</h1>
+        <Table
+          totalItems={state.watchlist?.length}
+          header={["Pool", "Tx Count", "TVL (USD)", "Volume (USD)"]}
+          offset={offset}
+          setOffset={setOffset}>
+          {state.watchlist.map(item => (
+            <TablePoolsItem key={item.id} item={item} onClick={() => onItemClick(item.id, router)} />
+          ))}
         </Table>
       </div>
     </>
